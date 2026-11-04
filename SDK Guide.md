@@ -285,11 +285,28 @@ SendBlueToothData.removeBond(CEBlueSharedPreference.getDevAddress());
 BluetoothHelper.getInstance().getSendDataManager().sendGestureConfig(0);
 ```
 
+- 31.Configure display instructions for left/right-hand wear(设置左右手佩戴显示指令)
 
+```
+0: Left hand; 1: Right hand
+BluetoothHelper.getInstance().getSendBlueData().setLRDisplay(var)
+```
+
+- 32.Retrieve counter data(获取计数器数据)
+
+```
+BluetoothHelper.getInstance().getSendBlueData().requestCounterSync();
+```
+
+- 33.Clear counter data(清除计数器数据)
+
+```
+BluetoothHelper.getInstance().getSendBlueData().clearCounter();
+```
 
 ##### 监听设备数据
 
-- 31.Receive device data monitoring(接收设备数据监听)
+- Receive device data monitoring(接收设备数据监听)
 
 ```java
 
@@ -578,6 +595,19 @@ private void setBlueToothDataReceiveListener(IK6AnalysiDevRcvDataManager k6Analy
                 gSonerDataLiveData.postValue(datas);
                 return false;
             });
+  
+  //Receive the configuration status of the left and right hands from the device.(接收设备回传左右手设置状态)
+  k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_DATA_TYPE_SET_LEFT_RIGHT_HAND,
+                (K6BleDataResult<K6_DATA_TYPE_LEFT_RIGHT_HAND>) data -> {
+                    Logger.e("SDK", "左右手 = " + data.getControlType());
+                    return false;
+                });
+  //Receive counter data sent back by the device(接收设备回传计数器数据)
+  k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_K6_DATA_TYPE_COUNTER,
+                (K6BleDataResult<K6_DATA_TYPE_COUNTER>) data -> {
+                    Logger.e("SDK", "计数器数据 = " + data.getCounter_num());
+                    return false;
+                });
 }
 ```
 
