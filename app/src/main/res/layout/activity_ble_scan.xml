@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#000000">
 
     <!-- 顶部返回 -->
@@ -13,6 +14,7 @@
         android:layout_marginStart="8dp"
         android:padding="12dp"
         android:src="@drawable/ic_arrow_back"
+        android:contentDescription="@string/ui_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +23,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scanning equipment"
+        android:text="@string/ui_scan_title"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -34,7 +36,8 @@
     <LinearLayout
         android:id="@+id/layout_scan_status"
         android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
+        android:minHeight="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="16dp"
@@ -43,6 +46,8 @@
         android:orientation="horizontal"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_back">
@@ -55,10 +60,11 @@
 
         <TextView
             android:id="@+id/tv_scan_status"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:text="Scanning for nearby Bluetooth devices..."
+            android:text="@string/ui_scan_status"
             android:textColor="#E8E8E8"
             android:textSize="15sp" />
 
@@ -69,7 +75,7 @@
         android:id="@+id/tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="未扫描到设备"
+        android:text="@string/ui_no_devices"
         android:textColor="#777777"
         android:textSize="15sp"
         android:visibility="gone"
@@ -103,7 +109,7 @@
         android:layout_marginBottom="28dp"
         android:background="@drawable/bg_scan_button"
         android:gravity="center"
-        android:text="Start scanning"
+        android:text="@string/ui_scan_start"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"

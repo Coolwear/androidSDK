@@ -17,12 +17,14 @@ import ce.com.cenewbluesdk.entity.k6.K6NoDisturbSummary;
 import ce.com.cenewbluesdk.entity.k6.K6_Action;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_BATTERY_INFO;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_CONTACT_SYNC;
+import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_COUNTER;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_DRINK_ALARM;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_FUNCTION_CONTROL;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_GESTURE_CONFIG;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_HAND_RISE_SWITCH;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_HEART_AUTO_SWITCH;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_HR_CONTROL;
+import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_LEFT_RIGHT_HAND;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_REAL_BP;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_REAL_O2;
 import ce.com.cenewbluesdk.entity.k6.K6_DATA_TYPE_TARGET_ALARM;
@@ -47,6 +49,7 @@ import ce.com.cenewbluesdk.proxy.interfaces.K6BleDataResult;
 import ce.com.cenewbluesdk.proxy.sdkhelper.BluetoothHelper;
 import ce.com.cenewbluesdk.uitl.ByteUtil;
 import ce.com.cenewbluesdk.uitl.Lg;
+import ce.com.cenewbluesdk.uitl.Logger;
 
 /**
  * @Description:
@@ -91,6 +94,10 @@ public class BluetoothManager extends AndroidViewModel {
     public static MutableLiveData<Integer> hidLiveData = new MutableLiveData<>();
     public static MutableLiveData<List<k6_GSENSOR_DATA>> gSonerDataLiveData = new MutableLiveData<>();
     public static DataCallBack dataCallBack;
+
+    public static MutableLiveData<Integer> takeLiveData = new MutableLiveData<>();
+    public static MutableLiveData<Integer> LRDisplayLiveData = new MutableLiveData<>();
+    public static MutableLiveData<Integer> counterLiveData = new MutableLiveData<>();
 
     public BluetoothManager(@NonNull Application application) {
         super(application);
@@ -223,11 +230,7 @@ public class BluetoothManager extends AndroidViewModel {
         k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_TAKE_PHOTOS, new K6BleDataResult<Integer>() {
             @Override
             public boolean bleDataResult(Integer integer) {
-                if (integer == CEBC.OPENSTATUS.OPEN) {
-                    Log.i(TAG, "open/Take photo");
-                } else {
-                    Log.i(TAG, "close");
-                }
+                takeLiveData.postValue(integer);
                 return false;
             }
         });
@@ -389,6 +392,21 @@ public class BluetoothManager extends AndroidViewModel {
         k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_DATA_TYPE_GSENSOR_RAW,
                 (K6BleDataResult<List<k6_GSENSOR_DATA>>) datas -> {
                     gSonerDataLiveData.postValue(datas);
+                    return false;
+                });
+
+        //Receive the configuration status of the left and right hands from the device.(接收设备回传左右手设置状态)
+        k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_DATA_TYPE_SET_LEFT_RIGHT_HAND,
+                (K6BleDataResult<K6_DATA_TYPE_LEFT_RIGHT_HAND>) data -> {
+                    LRDisplayLiveData.postValue(data.getControlType());
+                    return false;
+                });
+
+        //Receive counter data sent back by the device(接收设备回传计数器数据)
+        k6AnalysiDevManager.addBleDataResultListener(K6_Action.RCVD.RCVD_K6_DATA_TYPE_COUNTER,
+                (K6BleDataResult<K6_DATA_TYPE_COUNTER>) data -> {
+                    Logger.e("SDK", "计数器数据 = " + data.getCounter_num());
+                    counterLiveData.postValue(data.getCounter_num());
                     return false;
                 });
     }

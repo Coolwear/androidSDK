@@ -81,13 +81,13 @@ public class BleDeviceAdapter
 
         holder.tvName.setText(
                 TextUtils.isEmpty(item.getName())
-                        ? "Unknown"
+                        ? holder.itemView.getContext().getString(R.string.ui_unknown_device)
                         : item.getName()
         );
 
         holder.tvMac.setText(item.getmBluetoothDevice().getAddress());
         holder.tvRssi.setText(
-                "RSSI: " + item.getRssi()
+                holder.itemView.getContext().getString(R.string.ui_device_rssi, item.getRssi())
         );
 
         int rssi = item.getRssi();

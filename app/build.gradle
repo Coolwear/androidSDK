@@ -3,16 +3,61 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
+def validateReleaseSigning = tasks.register('validateReleaseSigning') {
+    group = 'verification'
+    description = 'Checks the local release signing configuration.'
+    doLast {
+        def requiredProperties = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword']
+        def missingProperties = requiredProperties.findAll {
+            !keystoreProperties.getProperty(it)?.trim()
+        }
+        if (!missingProperties.isEmpty()) {
+            throw new GradleException("Release signing requires keystore.properties with: ${missingProperties.join(', ')}. See keystore.properties.example.")
+        }
+        if (!rootProject.file(keystoreProperties.getProperty('storeFile')).isFile()) {
+            throw new GradleException('Release keystore not found. Check storeFile in keystore.properties.')
+        }
+    }
+}
+
+tasks.configureEach {
+    if (name == 'preReleaseBuild') {
+        dependsOn(validateReleaseSigning)
+    }
+}
+
 android {
     namespace 'com.example.sdkdemo'
 
+    signingConfigs {
+        release {
+            storeFile rootProject.file(keystoreProperties.getProperty('storeFile', 'keystore/sdk-demo-release.jks'))
+            storePassword keystoreProperties.getProperty('storePassword')
+            keyAlias keystoreProperties.getProperty('keyAlias')
+            keyPassword keystoreProperties.getProperty('keyPassword')
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.sdkdemo"
-        compileSdkVersion 35
+        compileSdkVersion 36
         minSdk 24
-        targetSdk 35
+        targetSdk 36
         versionCode 1
         versionName "1.0"
+        resourceConfigurations += ['en', 'zh']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

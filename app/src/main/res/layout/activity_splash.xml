@@ -28,7 +28,7 @@
         android:focusable="true"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="Start binding"
+        android:text="@string/ui_start_binding"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

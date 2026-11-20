@@ -174,11 +174,11 @@ public class BleScanActivity extends AppCompatActivity {
         tvEmpty.setVisibility(View.GONE);
 
         tvScanStatus.setText(
-                "Scanning for nearby Bluetooth devices..."
+                R.string.ui_scan_status
         );
 
         btnScan.setText(
-                "Stop scanning"
+                R.string.stop_scan
         );
 
         // TODO: Call your BLE SDK to start scanning.
@@ -190,15 +190,15 @@ public class BleScanActivity extends AppCompatActivity {
         isScanning = false;
         // TODO: Call your BLE SDK to stop scanning.
         BluetoothHelper.getInstance().stopScan();
-        tvScanStatus.setText(
-                "Scan complete," + deviceList.size() + " devices detected."
-        );
+        int deviceCount = adapter.getItemCount();
+        tvScanStatus.setText(getResources().getQuantityString(
+                R.plurals.ui_scan_complete, deviceCount, deviceCount));
 
         btnScan.setText(
-                "Start scanning"
+                R.string.ui_scan_start
         );
 
-        if (deviceList.isEmpty()) {
+        if (deviceCount == 0) {
             tvEmpty.setVisibility(View.VISIBLE);
         } else {
             tvEmpty.setVisibility(View.GONE);

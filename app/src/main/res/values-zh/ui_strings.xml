@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="scanning">正在扫描</string>
+    <string name="stop_scan">停止扫描</string>
+    <string name="connecting">正在连接…</string>
+    <string name="connecting_back">正在重新连接，请稍候…</string>
+    <string name="receive_data">接收数据</string>
+
+    <string name="ui_sdk_title">SDK 演示</string>
+    <string name="ui_scan_title">扫描设备</string>
+    <string name="ui_scan_status">正在扫描附近的蓝牙设备…</string>
+    <string name="ui_scan_start">开始扫描</string>
+    <string name="ui_no_devices">未扫描到设备</string>
+    <string name="ui_start_binding">开始绑定</string>
+    <string name="ui_loading">加载中…</string>
+    <string name="ui_send_data">发送数据</string>
+    <string name="ui_back">返回</string>
+    <string name="ui_unknown_device">未知设备</string>
+    <string name="ui_device_rssi">信号强度：%1$d dBm</string>
+    <string name="ui_yes">是</string>
+    <string name="ui_no">否</string>
+    <string name="ui_enabled">已开启</string>
+    <string name="ui_disabled">已关闭</string>
+    <string name="ui_left_hand">左手</string>
+    <string name="ui_right_hand">右手</string>
+
+    <plurals name="ui_scan_complete">
+        <item quantity="other">扫描完成，发现 %1$d 台设备。</item>
+    </plurals>
+
+    <string name="ui_action_numbered">%1$d. %2$s</string>
+    <string name="ui_action_heart_rate">心率测试</string>
+    <string name="ui_action_blood_oxygen">血氧测试</string>
+    <string name="ui_action_hrv">HRV 测试</string>
+    <string name="ui_action_stress">压力测试</string>
+    <string name="ui_action_auto_monitor">设置自动监测</string>
+    <string name="ui_action_sport_start">开始 App 运动</string>
+    <string name="ui_action_sport_pause">暂停 App 运动</string>
+    <string name="ui_action_sport_resume">继续 App 运动</string>
+    <string name="ui_action_sport_stop">停止 App 运动</string>
+    <string name="ui_action_shake_camera">开启摇一摇拍照</string>
+    <string name="ui_action_shutdown">设备关机</string>
+    <string name="ui_action_ota">OTA 调用示例</string>
+    <string name="ui_action_heart_ppg">采集心率 PPG</string>
+    <string name="ui_action_gsensor">采集 G-sensor 数据</string>
+    <string name="ui_action_hid_enable">开启 HID 配对</string>
+    <string name="ui_action_hid_disable">关闭 HID 配对</string>
+    <string name="ui_action_handedness">左右手佩戴设置</string>
+    <string name="ui_action_counter_get">获取计数器</string>
+    <string name="ui_action_counter_reset">重置计数器</string>
+    <string name="ui_action_unbind">解绑设备</string>
+
+    <string name="ui_log_connected">%1$s — %2$s：已连接</string>
+    <string name="ui_log_connecting">%1$s：正在连接…</string>
+    <string name="ui_log_disconnected">%1$s：已断开连接</string>
+    <string name="ui_log_auto_monitor">自动监测设置：%1$s</string>
+    <string name="ui_log_battery">电量：%1$d%%；正在充电：%2$s</string>
+    <string name="ui_log_device_info">收到设备信息：%1$s</string>
+    <string name="ui_log_heart_rate">收到心率数据：%1$s</string>
+    <string name="ui_log_blood_oxygen">收到血氧数据：%1$s</string>
+    <string name="ui_log_hrv">收到 HRV 数据：%1$s</string>
+    <string name="ui_log_stress">收到压力数据：%1$s</string>
+    <string name="ui_log_temperature">收到体温数据：%1$s</string>
+    <string name="ui_log_sleep">收到睡眠数据：%1$s</string>
+    <string name="ui_log_motion">收到运动数据：%1$s</string>
+    <string name="ui_log_ota_progress">收到 OTA 进度：%1$d</string>
+    <string name="ui_log_wear_device">设备未佩戴，请正确佩戴！</string>
+    <string name="ui_log_measurement_complete">测量完成！</string>
+    <string name="ui_log_heart_ppg">收到心率 PPG 数据：%1$s</string>
+    <string name="ui_log_gsensor">收到 G-sensor 数据：%1$s</string>
+    <string name="ui_log_hid">收到 HID 状态：%1$s</string>
+    <string name="ui_log_camera">收到拍照状态：%1$s</string>
+    <string name="ui_log_handedness">收到佩戴设置：%1$s</string>
+    <string name="ui_log_counter">收到计数器：%1$d</string>
+    <string name="ui_log_send">发送：%1$s</string>
+</resources>

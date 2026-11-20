@@ -113,3 +113,24 @@ return false;
 1. v1.2.8  同步ota传输速度  20260402
 2. v1.2.9  增加心率PPG采集  20260618
 3. v1.2.10  增加GensorPPG采集  20260624
+
+## Release 签名打包
+
+Release 签名从项目根目录的 `keystore.properties` 读取。首次配置时，复制
+`keystore.properties.example` 为 `keystore.properties`，填写密钥文件路径、密码和别名。
+`storeFile` 相对项目根目录解析，Windows 路径请使用 `/`。
+
+本机已生成的签名文件为 `keystore/sdk-demo-release.jks`，别名为 `sdk-demo-release`，
+密码保存在本机的 `keystore.properties` 中。这两个文件均已加入 Git 忽略规则，请单独备份，
+后续版本继续使用同一份签名密钥。其他开发机需还原这两个本地文件后再打 release 包。
+
+在项目根目录执行：
+
+```powershell
+.\gradlew.bat :app:assembleRelease
+```
+
+签名 APK 输出到 `app/build/outputs/apk/release/app-release.apk`。
+如需 AAB，执行 `.\gradlew.bat :app:bundleRelease`，
+输出到 `app/build/outputs/bundle/release/app-release.aab`。
+缺少签名配置或密钥文件时，release 构建会报错提示；debug 构建不需要该配置。

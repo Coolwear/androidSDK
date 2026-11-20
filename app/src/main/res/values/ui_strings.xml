@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_sdk_title">SDK Demo</string>
+    <string name="ui_scan_title">Scan devices</string>
+    <string name="ui_scan_status">Scanning for nearby Bluetooth devices…</string>
+    <string name="ui_scan_start">Start scanning</string>
+    <string name="ui_no_devices">No devices found</string>
+    <string name="ui_start_binding">Start binding</string>
+    <string name="ui_loading">Loading…</string>
+    <string name="ui_send_data">Send data</string>
+    <string name="ui_back">Back</string>
+    <string name="ui_unknown_device">Unknown device</string>
+    <string name="ui_device_rssi">RSSI: %1$d dBm</string>
+    <string name="ui_yes">Yes</string>
+    <string name="ui_no">No</string>
+    <string name="ui_enabled">Enabled</string>
+    <string name="ui_disabled">Disabled</string>
+    <string name="ui_left_hand">Left hand</string>
+    <string name="ui_right_hand">Right hand</string>
+
+    <plurals name="ui_scan_complete">
+        <item quantity="one">Scan complete: %1$d device found.</item>
+        <item quantity="other">Scan complete: %1$d devices found.</item>
+    </plurals>
+
+    <string name="ui_action_numbered">%1$d. %2$s</string>
+    <string name="ui_action_heart_rate">Heart rate test</string>
+    <string name="ui_action_blood_oxygen">Blood oxygen test</string>
+    <string name="ui_action_hrv">HRV test</string>
+    <string name="ui_action_stress">Stress test</string>
+    <string name="ui_action_auto_monitor">Set automatic monitoring</string>
+    <string name="ui_action_sport_start">Start app workout</string>
+    <string name="ui_action_sport_pause">Pause app workout</string>
+    <string name="ui_action_sport_resume">Resume app workout</string>
+    <string name="ui_action_sport_stop">Stop app workout</string>
+    <string name="ui_action_shake_camera">Enable shake to take photo</string>
+    <string name="ui_action_shutdown">Shut down device</string>
+    <string name="ui_action_ota">OTA invocation example</string>
+    <string name="ui_action_heart_ppg">Collect heart rate PPG</string>
+    <string name="ui_action_gsensor">Collect G-sensor data</string>
+    <string name="ui_action_hid_enable">Enable HID pairing</string>
+    <string name="ui_action_hid_disable">Disable HID pairing</string>
+    <string name="ui_action_handedness">Left/right hand settings</string>
+    <string name="ui_action_counter_get">Get counter</string>
+    <string name="ui_action_counter_reset">Reset counter</string>
+    <string name="ui_action_unbind">Unbind device</string>
+
+    <string-array name="ui_sdk_actions">
+        <item>@string/ui_action_heart_rate</item>
+        <item>@string/ui_action_blood_oxygen</item>
+        <item>@string/ui_action_hrv</item>
+        <item>@string/ui_action_stress</item>
+        <item>@string/ui_action_auto_monitor</item>
+        <item>@string/ui_action_sport_start</item>
+        <item>@string/ui_action_sport_pause</item>
+        <item>@string/ui_action_sport_resume</item>
+        <item>@string/ui_action_sport_stop</item>
+        <item>@string/ui_action_shake_camera</item>
+        <item>@string/ui_action_shutdown</item>
+        <item>@string/ui_action_ota</item>
+        <item>@string/ui_action_heart_ppg</item>
+        <item>@string/ui_action_gsensor</item>
+        <item>@string/ui_action_hid_enable</item>
+        <item>@string/ui_action_hid_disable</item>
+        <item>@string/ui_action_handedness</item>
+        <item>@string/ui_action_counter_get</item>
+        <item>@string/ui_action_counter_reset</item>
+        <item>@string/ui_action_unbind</item>
+    </string-array>
+
+    <string name="ui_log_connected">%1$s — %2$s: Connected</string>
+    <string name="ui_log_connecting">%1$s: Connecting…</string>
+    <string name="ui_log_disconnected">%1$s: Disconnected</string>
+    <string name="ui_log_auto_monitor">Automatic monitoring settings: %1$s</string>
+    <string name="ui_log_battery">Battery: %1$d%%; charging: %2$s</string>
+    <string name="ui_log_device_info">Received device information: %1$s</string>
+    <string name="ui_log_heart_rate">Received heart rate data: %1$s</string>
+    <string name="ui_log_blood_oxygen">Received blood oxygen data: %1$s</string>
+    <string name="ui_log_hrv">Received HRV data: %1$s</string>
+    <string name="ui_log_stress">Received stress data: %1$s</string>
+    <string name="ui_log_temperature">Received temperature data: %1$s</string>
+    <string name="ui_log_sleep">Received sleep data: %1$s</string>
+    <string name="ui_log_motion">Received motion data: %1$s</string>
+    <string name="ui_log_ota_progress">Received OTA progress: %1$d</string>
+    <string name="ui_log_wear_device">Device not worn. Please wear it correctly.</string>
+    <string name="ui_log_measurement_complete">Measurement complete!</string>
+    <string name="ui_log_heart_ppg">Received heart rate PPG data: %1$s</string>
+    <string name="ui_log_gsensor">Received G-sensor data: %1$s</string>
+    <string name="ui_log_hid">Received HID status: %1$s</string>
+    <string name="ui_log_camera">Received camera status: %1$s</string>
+    <string name="ui_log_handedness">Received hand setting: %1$s</string>
+    <string name="ui_log_counter">Received counter: %1$d</string>
+    <string name="ui_log_send">Send: %1$s</string>
+</resources>

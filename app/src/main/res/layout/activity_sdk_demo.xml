@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:background="#000000">
 
     <!-- 顶部标题栏 -->
@@ -18,14 +19,15 @@
             android:layout_height="44dp"
             android:layout_centerVertical="true"
             android:padding="10dp"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/ui_back" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="SDK Demo"
+            android:text="@string/ui_sdk_title"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -51,7 +53,7 @@
                 android:id="@+id/tv_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Receive data"
+                android:text="@string/receive_data"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -78,7 +80,7 @@
                 android:id="@+id/tv_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Send data"
+                android:text="@string/ui_send_data"
                 android:textColor="#BDBDBD"
                 android:textSize="16sp" />
 

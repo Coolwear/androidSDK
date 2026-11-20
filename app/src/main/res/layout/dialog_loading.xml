@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:text="Loading..."/>
+            android:text="@string/ui_loading"/>
     </LinearLayout>
 
 

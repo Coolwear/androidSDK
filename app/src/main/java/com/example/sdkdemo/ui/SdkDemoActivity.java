@@ -1,5 +1,6 @@
 package com.example.sdkdemo.ui;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +70,7 @@ public class SdkDemoActivity extends AppCompatActivity {
     private RecyclerView rvSend;
 
     private final List<String> sendItems = new ArrayList<>();
+    private SdkSendAdapter sendAdapter;
 
 
     @Override
@@ -85,6 +89,17 @@ public class SdkDemoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Logger.d(TGA, "--onResume--");
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        ((TextView) findViewById(R.id.tv_title)).setText(R.string.ui_sdk_title);
+        tvReceive.setText(R.string.receive_data);
+        tvSend.setText(R.string.ui_send_data);
+        findViewById(R.id.iv_back).setContentDescription(getString(R.string.ui_back));
+        updateSendItems();
+        sendAdapter.notifyDataSetChanged();
     }
 
     private void initView() {
@@ -135,15 +150,16 @@ public class SdkDemoActivity extends AppCompatActivity {
             @Override
             public void onChanged(Integer integer) {
                 if (integer == K6_Action.RCVD.BLUE_CONNECTED) {
-                    appendLog(CEBlueSharedPreference.getDeviceName() + "——" + CEBlueSharedPreference.getDevAddress() + " : Connected");
+                    appendLog(R.string.ui_log_connected, CEBlueSharedPreference.getDeviceName(),
+                            CEBlueSharedPreference.getDevAddress());
 //                    //Data transmission channel is open; by default, the device does not upload data.
 //                    BluetoothHelper.getInstance().setEnableGsDataTrans(true);
                     //Synchronize information to the device: e.g., phone time zone and time
                     BluetoothHelper.getInstance().getSendDataManager().sendAsynInfo();
                 } else if (integer == K6_Action.RCVD.BLUE_CONNECTING) {
-                    appendLog(CEBlueSharedPreference.getDeviceName() + " : Connecting...");
+                    appendLog(R.string.ui_log_connecting, CEBlueSharedPreference.getDeviceName());
                 } else if (integer == K6_Action.RCVD.BLUE_DISCONNECT) {
-                    appendLog(CEBlueSharedPreference.getDeviceName() + " : Disconnected");
+                    appendLog(R.string.ui_log_disconnected, CEBlueSharedPreference.getDeviceName());
                 }
 
             }
@@ -153,7 +169,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.heartAutoSwitch.observe(this, new Observer<K6_DATA_TYPE_HEART_AUTO_SWITCH>() {
             @Override
             public void onChanged(K6_DATA_TYPE_HEART_AUTO_SWITCH result) {
-                appendLog("Heart rate monitoring is enabled : " + result.toString());
+                appendLog(R.string.ui_log_auto_monitor, result);
             }
         });
 
@@ -161,8 +177,8 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.batteryLiveData.observe(this, new Observer<K6_DATA_TYPE_BATTERY_INFO>() {
             @Override
             public void onChanged(K6_DATA_TYPE_BATTERY_INFO battery_info) {
-                appendLog("Received Battery：" + battery_info.getBattery() + "%" + "   Charging：" +
-                        (battery_info.isChargerStatus() ? "Y" : "N"));
+                appendLog(R.string.ui_log_battery, battery_info.getBattery(),
+                        getString(battery_info.isChargerStatus() ? R.string.ui_yes : R.string.ui_no));
             }
         });
 
@@ -170,7 +186,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.devInfoStructLive.observe(this, new Observer<K6_DevInfoStruct>() {
             @Override
             public void onChanged(K6_DevInfoStruct devInfoStruct) {
-                appendLog("Received device information：" + devInfoStruct.toString());
+                appendLog(R.string.ui_log_device_info, devInfoStruct);
             }
         });
 
@@ -182,7 +198,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (K6_HeartStruct heartStruct : result) {
                     stringBuilder.append(heartStruct.toString());
                 }
-                appendLog("Received heart rate data：" + stringBuilder);
+                appendLog(R.string.ui_log_heart_rate, stringBuilder);
 
             }
         });
@@ -195,7 +211,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (K6_DATA_TYPE_REAL_O2 struct : result) {
                     stringBuilder.append(struct.toString());
                 }
-                appendLog("Received blood oxygen data：" + stringBuilder);
+                appendLog(R.string.ui_log_blood_oxygen, stringBuilder);
 
             }
         });
@@ -209,7 +225,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (k6_RRI_HRV_DATA struct : result) {
                     stringBuilder.append(struct.toString());
                 }
-                appendLog("Received hrv data：" + stringBuilder);
+                appendLog(R.string.ui_log_hrv, stringBuilder);
             }
         });
 
@@ -221,7 +237,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (K6_StressStruct struct : result) {
                     stringBuilder.append(struct.toString());
                 }
-                appendLog("Received pressure data：" + stringBuilder);
+                appendLog(R.string.ui_log_stress, stringBuilder);
             }
         });
 
@@ -234,7 +250,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (K6_TempStruct tempStruct : result) {
                     stringBuilder.append(tempStruct.toString());
                 }
-                appendLog("Received temperature data：" + stringBuilder);
+                appendLog(R.string.ui_log_temperature, stringBuilder);
             }
         });
 
@@ -242,7 +258,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.sleepData.observe(this, new Observer<K6_sleepData>() {
             @Override
             public void onChanged(K6_sleepData result) {
-                appendLog("Receive sleep data：" + result.toString());
+                appendLog(R.string.ui_log_sleep, result);
             }
         });
 
@@ -254,7 +270,7 @@ public class SdkDemoActivity extends AppCompatActivity {
                 for (K6_Sport sport : result) {
                     stringBuilder.append(sport.toString());
                 }
-                appendLog("Receive motion data：" + stringBuilder);
+                appendLog(R.string.ui_log_motion, stringBuilder);
             }
         });
 
@@ -262,7 +278,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.otaFileProgress.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                appendLog("OTA progress received：" + integer);
+                appendLog(R.string.ui_log_ota_progress, integer);
 
             }
         });
@@ -272,9 +288,9 @@ public class SdkDemoActivity extends AppCompatActivity {
             @Override
             public void onChanged(K6_DATA_TYPE_HR_CONTROL control) {
                 if (control.controlState == 0) {
-                    appendLog("The device has been removed from your hands. Please wear it correctly!");
+                    appendLog(R.string.ui_log_wear_device);
                 } else if (control.controlState == 1) {
-                    appendLog("Measurement complete!");
+                    appendLog(R.string.ui_log_measurement_complete);
                 }
             }
         });
@@ -283,7 +299,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.heartPpgLiveData.observe(this, new Observer<List<Integer>>() {
             @Override
             public void onChanged(List<Integer> payload) {
-                appendLog("Received HR PPG data:" + payload.toString());
+                appendLog(R.string.ui_log_heart_ppg, payload);
             }
         });
 
@@ -292,7 +308,7 @@ public class SdkDemoActivity extends AppCompatActivity {
         BluetoothManager.gSonerDataLiveData.observe(this, new Observer<List<k6_GSENSOR_DATA>>() {
             @Override
             public void onChanged(List<k6_GSENSOR_DATA> payload) {
-                appendLog("Data received from gSoner:" + payload.toString());
+                appendLog(R.string.ui_log_gsensor, payload);
             }
         });
         //hid
@@ -300,40 +316,51 @@ public class SdkDemoActivity extends AppCompatActivity {
             @Override
             public void onChanged(Integer payload) {
                 //Receiving device gesture switch status: 0: indicates the device HID is off; greater than 0: indicates the device HID is on.
-                appendLog("Received HID switch:" + payload.toString());
+                appendLog(R.string.ui_log_hid,
+                        getString(payload > 0 ? R.string.ui_enabled : R.string.ui_disabled));
+            }
+        });
+        //take photo
+        BluetoothManager.takeLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer payload) {
+                //Receiving device gesture switch status: 0: indicates the device HID is off; greater than 0: indicates the device HID is on.
+                appendLog(R.string.ui_log_camera,
+                        getString(payload == CEBC.OPENSTATUS.OPEN ? R.string.ui_enabled : R.string.ui_disabled));
+            }
+        });
+        //Left/Right-Hand Settings
+        BluetoothManager.LRDisplayLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer payload) {
+                //Receiving device gesture switch status: 0: indicates the device HID is off; greater than 0: indicates the device HID is on.
+                appendLog(R.string.ui_log_handedness,
+                        getString(payload == 0 ? R.string.ui_left_hand : R.string.ui_right_hand));
+            }
+        });
+        //counter
+        BluetoothManager.counterLiveData.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer payload) {
+                //Receiving device gesture switch status: 0: indicates the device HID is off; greater than 0: indicates the device HID is on.
+                appendLog(R.string.ui_log_counter, payload);
             }
         });
     }
 
     private void initSendData() {
-        sendItems.clear();
-        sendItems.add("1. Heart rate test");
-        sendItems.add("2. Blood oxygen test");
-        sendItems.add("3. HRV test");
-        sendItems.add("4. Stress test");
-        sendItems.add("5. Set automatic detection switch");
-        sendItems.add("6. App exercise started");
-        sendItems.add("7. App activity pause");
-        sendItems.add("8. App campaign continues");
-        sendItems.add("9. App activity stopped");
-        sendItems.add("10. Shake to take a picture");
-        sendItems.add("11. Equipment shutdown");
-        sendItems.add("12. OTA Invocation Method");
-        sendItems.add("13. HR PPG");
-        sendItems.add("14. Gensor PPG");
-        sendItems.add("15. CreateHid");
-        sendItems.add("16. CloseHid");
+        updateSendItems();
 
-        SdkSendAdapter adapter =
+        sendAdapter =
                 new SdkSendAdapter(sendItems);
 
         rvSend.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        rvSend.setAdapter(adapter);
+        rvSend.setAdapter(sendAdapter);
 
-        adapter.setOnItemClickListener(position -> {
+        sendAdapter.setOnItemClickListener(position -> {
 
             switch (position) {
 
@@ -395,9 +422,30 @@ public class SdkDemoActivity extends AppCompatActivity {
                 case 15:
                     closeHid();
                     break;
+                case 16:
+                    setLRDisplay();
+                    break;
+                case 17:
+                    requestCounterSync();
+                    break;
+                case 18:
+                    clearCounter();
+                    break;
+                case 19:
+                    unbindDevice();
+                    finish();
+                    break;
             }
             showReceivePage();
         });
+    }
+
+    private void updateSendItems() {
+        sendItems.clear();
+        String[] actions = getResources().getStringArray(R.array.ui_sdk_actions);
+        for (int i = 0; i < actions.length; i++) {
+            sendItems.add(getString(R.string.ui_action_numbered, i + 1, actions[i]));
+        }
     }
 
     private void showReceivePage() {
@@ -435,6 +483,14 @@ public class SdkDemoActivity extends AppCompatActivity {
     /**
      * Add receive logs
      */
+    private void appendLog(@StringRes int messageRes, Object... args) {
+        appendLog(getString(messageRes, args));
+    }
+
+    private void appendSendLog(@StringRes int actionRes) {
+        appendLog(R.string.ui_log_send, getString(actionRes));
+    }
+
     public void appendLog(String log) {
         runOnUiThread(() -> {
             String old = tvLog.getText().toString();
@@ -479,99 +535,115 @@ public class SdkDemoActivity extends AppCompatActivity {
     }
 
     private void testHeartRate() {
-        appendLog("Send: Start Heart Rate Test");
+        appendSendLog(R.string.ui_action_heart_rate);
         //Start test: CEBC.OPENSTATUS.OPEN Stop test: CEBC.OPENSTATUS.CLOSE
         BluetoothHelper.getInstance().getSendBlueData().sendHeartRateSwitch(CEBC.OPENSTATUS.OPEN);
     }
 
     private void testSpo2() {
-        appendLog("Send: Start Blood Oxygen Test");
+        appendSendLog(R.string.ui_action_blood_oxygen);
         //Start test: CEBC.OPENSTATUS.OPEN Stop test: CEBC.OPENSTATUS.CLOSE
         BluetoothHelper.getInstance().getSendBlueData().sendBloodOxygenDetection(CEBC.OPENSTATUS.OPEN);
     }
 
     private void testStress() {
-        appendLog("Send: Start stress test");
+        appendSendLog(R.string.ui_action_stress);
         //Start test: CEBC.OPENSTATUS.OPEN Stop test: CEBC.OPENSTATUS.CLOSE
         BluetoothHelper.getInstance().getSendBlueData().sendStressSwitch(CEBC.OPENSTATUS.OPEN);
     }
 
     private void testHRV() {
-        appendLog("Send: Start hrv test");
+        appendSendLog(R.string.ui_action_hrv);
         //Start test: CEBC.OPENSTATUS.OPEN Stop test: CEBC.OPENSTATUS.CLOSE
         BluetoothHelper.getInstance().getSendBlueData().sendRriHrvCmd(CEBC.OPENSTATUS.OPEN);
     }
 
     private void setAutoMonitor() {
-        appendLog("Send: Set automatic detection switch");
+        appendSendLog(R.string.ui_action_auto_monitor);
         //parameter1 Heart rate switch; parameter2 Blood oxygen switch; parameter3 Rate interval (minutes)
         BluetoothHelper.getInstance().getSendBlueData().sendHeartAutoSwitch(CEBC.OPENSTATUS.OPEN, CEBC.OPENSTATUS.OPEN, 5);
     }
 
     private void appSportStart() {
-        appendLog("Send: Start App workout");
+        appendSendLog(R.string.ui_action_sport_start);
         BluetoothHelper.getInstance().getSendBlueData().sendAppSport(
                 K6_MixSportType.MIX_SPORT_RUN, K6_SEND_APP_SPORT_STRUCT.SPORT_STATUS_START, 0, 0);
     }
 
     private void appSportPause() {
-        appendLog("Send: App exercise pause");
+        appendSendLog(R.string.ui_action_sport_pause);
         BluetoothHelper.getInstance().getSendBlueData().sendAppSport(
                 K6_MixSportType.MIX_SPORT_RUN, K6_SEND_APP_SPORT_STRUCT.SPORT_STATUS_PAUSE, 0, 0);
     }
 
     private void appSportResume() {
-        appendLog("Send: Continue exercising via App");
+        appendSendLog(R.string.ui_action_sport_resume);
         BluetoothHelper.getInstance().getSendBlueData().sendAppSport(
                 K6_MixSportType.MIX_SPORT_RUN, K6_SEND_APP_SPORT_STRUCT.SPORT_STATUS_CONTINUE, 0, 0);
     }
 
     private void appSportStop() {
-        appendLog("Send: App activity stopped");
+        appendSendLog(R.string.ui_action_sport_stop);
         BluetoothHelper.getInstance().getSendBlueData().sendAppSport(
                 K6_MixSportType.MIX_SPORT_RUN, K6_SEND_APP_SPORT_STRUCT.SPORT_STATUS_STOP, 0, 0);
     }
 
     private void shakeCamera() {
-        appendLog("Send: Shake to take photo switch");
+        appendSendLog(R.string.ui_action_shake_camera);
         //true 开 ；false 关
         BluetoothHelper.getInstance().getSendBlueData().sendPhotoSwitch(true);
 
     }
 
     private void shutdownDevice() {
-        appendLog("Send: Device shutdown");
+        appendSendLog(R.string.ui_action_shutdown);
         BluetoothHelper.getInstance().getSendBlueData().sendShutDown();
     }
 
     private void startOta() {
-        appendLog("Send: OTA call");
+        appendSendLog(R.string.ui_action_ota);
         // localPath: The OTA package path can be downloaded from the server to a local file.
         //   BluetoothHelper.getInstance().getTransfer().otaUpgrade(localPath, "", "");
     }
 
     private void startHrPPg() {
-        appendLog("Send: Heart rate PPG");
+        appendSendLog(R.string.ui_action_heart_ppg);
         //true: On; false: Off
         BluetoothHelper.getInstance().getSendBlueData().sendOffOnPpg(true);
     }
 
     private void startGensor() {
-        appendLog("Send: Gensor Collection");
+        appendSendLog(R.string.ui_action_gsensor);
         //true: On; false: Off
         BluetoothHelper.getInstance().getSendBlueData().sendOffOnGensor(true);
     }
 
     private void createHid() {
-        appendLog("Send: Enable HID pairing");
+        appendSendLog(R.string.ui_action_hid_enable);
         SendBlueToothData.createBond(CEBlueSharedPreference.getDevAddress());
         BluetoothHelper.getInstance().getSendDataManager().sendGestureConfig(1);
 
     }
 
     private void closeHid() {
-        appendLog("Send: Disable HID pairing");
+        appendSendLog(R.string.ui_action_hid_disable);
         SendBlueToothData.removeBond(CEBlueSharedPreference.getDevAddress());
         BluetoothHelper.getInstance().getSendDataManager().sendGestureConfig(0);
+    }
+
+    /// 0: Left hand; 1: Right hand
+    private void setLRDisplay() {
+        appendSendLog(R.string.ui_action_handedness);
+        BluetoothHelper.getInstance().getSendDataManager().setLRDisplay(0);
+    }
+
+    private void requestCounterSync() {
+        appendSendLog(R.string.ui_action_counter_get);
+        BluetoothHelper.getInstance().getSendBlueData().requestCounterSync();
+    }
+
+    private void clearCounter() {
+        appendSendLog(R.string.ui_action_counter_reset);
+        BluetoothHelper.getInstance().getSendBlueData().clearCounter();
     }
 }
